@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MMIt6Dpf/rjn7gGjOWym/jcqK+XeSZcx2WxjnX0xqd9lAx0Ht56OCqh0CGnpYnY4TQiuhOmaUGGieiFBUmToEg==",
+  "dgSpecHash": "yWOVClS2Z/h0ZpAe2qmKYSEU58wYtAM3FU5m6MQ4+krGxkUSdZNUuDwRscJ2zkSuvFBMMAf11W5/PtglUeLgeA==",
   "success": true,
-  "projectFilePath": "c:\\Users\\andre\\OneDrive\\Dokument\\skola\\03 Avancerad prog c-sharp och webprogrammering\\Assignment-api\\AndreasFruitApi\\AndreasFruit-api.csproj",
+  "projectFilePath": "C:\\Users\\andre\\OneDrive\\Dokument\\skola\\03 Avancerad prog c-sharp och webprogrammering\\Assignment-api\\AndreasFruitApi\\AndreasFruit-api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\andre\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
