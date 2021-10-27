@@ -39,18 +39,22 @@ namespace AndreasFruit_api.Repositories
 
         public async Task<IList<Fruit>> FindFruitByCategoryAsync(string category)
         {
-            return await _context.Fruits.Where(c => c.Category.CategoryName.Trim().ToLower() == category.Trim().ToLower()).ToListAsync();
+            return await _context.Fruits
+            .Include(c => c.Category)
+            .Where(c => c.Category.CategoryName.Trim().ToLower() == category.Trim().ToLower()).ToListAsync();
         }
 
         public async Task<Fruit> FindFruitByPluNumberAsync(string plu)
         {
-            return await _context.Fruits.Include(c => c.Category)
+            return await _context.Fruits
+            .Include(c => c.Category)
             .SingleOrDefaultAsync(c => c.PluNumber.Trim().ToLower() == plu.Trim().ToLower());
         }
 
         public async Task<IList<Fruit>> ListAllFruitsAsync()
         {
-            return await _context.Fruits.Include(c => c.Category).ToListAsync();
+            return await _context.Fruits
+            .Include(c => c.Category).ToListAsync();
         }
 
         public bool RemoveFruit(Fruit fruit)

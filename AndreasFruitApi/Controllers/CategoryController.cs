@@ -60,7 +60,7 @@ namespace AndreasFruit_api.Controllers
             toUpdate.CategoryName = category.CategoryName;
 
             if (_unitOfWork.CategoryRepository.UpdateCategory(toUpdate))
-                if (await _unitOfWork.Complete()) return NoContent();
+                if (await _unitOfWork.Complete()) return Ok("Change saved successfully.");
 
             return StatusCode(500, "Something went wrong.");
         }
@@ -68,7 +68,7 @@ namespace AndreasFruit_api.Controllers
         [HttpDelete("{categoryName}")]
         public async Task<IActionResult> RemoveCategory(string categoryName){
             var toDelete = await _unitOfWork.CategoryRepository.GetCategoryAsync(categoryName);
-            if (toDelete == null) return NotFound($"Couldn't find fruit with name {categoryName}");
+            if (toDelete == null) return NotFound($"Couldn't find category with name {categoryName}");
 
             if (_unitOfWork.CategoryRepository.RemoveCategory(toDelete))
             if(await _unitOfWork.Complete()) return Ok("Category deleted successfully!");

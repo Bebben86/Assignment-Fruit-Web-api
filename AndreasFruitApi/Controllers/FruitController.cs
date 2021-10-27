@@ -90,7 +90,7 @@ namespace AndreasFruit_api.Controllers
             toUpdate.Name = fruit.Name;
 
             if (_unitOfWork.FruitRepository.UpdateFruit(toUpdate))
-                if (await _unitOfWork.Complete()) return NoContent();
+                if (await _unitOfWork.Complete()) return Ok("Changes saved successfully!");
 
             return StatusCode(500, "Something went wrong.");
         }
