@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace AndreasFruit_api.ViewModels.Fruit
 {
     public class ViewModel
@@ -10,6 +5,6 @@ namespace AndreasFruit_api.ViewModels.Fruit
         public int Id { get; set; }
         public string Name { get; set; }
         public string PluNumber { get; set; }
-        public int Category { get; set; }
+        public string CategoryName { get; set; }
     }
 }

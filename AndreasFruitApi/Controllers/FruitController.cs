@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AndreasFruit_api.Interfaces;
 using AndreasFruit_api.Models;
-using AndreasFruit_api.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using AndreasFruit_api.ViewModels.Fruit;
@@ -29,15 +27,16 @@ namespace AndreasFruit_api.Controllers
             try
             {
                 var fruit = _mapper.Map<Fruit>(name, opt => opt.Items["repo"] = _unitOfWork.Context);
+                
                 if (await _unitOfWork.FruitRepository.AddNewFruitAsync(fruit))
                 {
                     if (!await _unitOfWork.Complete())
-                        return StatusCode(500, "Något gick fel när frukten skule sparas.");
+                        return StatusCode(500, "Something went wrong while saving fruit.");
 
-                    var result = _mapper.Map<ViewModels.Fruit.ViewModel>(name);
+                    var result = _mapper.Map<ViewModels.Fruit.ViewModel>(fruit);
                     return StatusCode(201, result);
                 }
-                return StatusCode(500, "Något gick fel när frukten skulle sparas.");
+                return StatusCode(500, "Something went wrong while saving fruit.");
             }
             catch (Exception ex)
             {
@@ -48,14 +47,14 @@ namespace AndreasFruit_api.Controllers
         public async Task<IActionResult> GetFruit(int id)
         {
             var fruits = await _unitOfWork.FruitRepository.FindFruitAsync(id);
-            return Ok(_mapper.Map<List<ViewModel>>(fruits));
+            return Ok(_mapper.Map<ViewModels.Fruit.ViewModel>(fruits));
         }
 
         [HttpGet()]
         public async Task<IActionResult> Get()
         {
             var result = await _unitOfWork.FruitRepository.ListAllFruitsAsync();
-            var fruits = _mapper.Map<List<ViewModel>>(result);
+            var fruits = _mapper.Map<IList<ViewModels.Fruit.ViewModel>>(result);
 
             return Ok(fruits);
         }
@@ -65,27 +64,27 @@ namespace AndreasFruit_api.Controllers
         {
 
             var result = await _unitOfWork.FruitRepository.FindFruitByPluNumberAsync(plu);
-            if (result == null) return NotFound($"Kunde inte hitta frukt med PLU {plu}");
+            if (result == null) return NotFound($"Couldn't find fruit with PLU {plu}");
 
-            var response = _mapper.Map<ViewModel>(result);
-            return Ok(result);
+            var response = _mapper.Map<ViewModels.Fruit.ViewModel>(result);
+            return Ok(response);
         }
 
         [HttpGet("byCategory/{category}")]
         public async Task<IActionResult> FindByCategory(string category)
         {
             var result = await _unitOfWork.FruitRepository.FindFruitByCategoryAsync(category);
-            if (category == null) return NotFound($"Kunde inte hitta frukt med kategorin {category}");
+            if (category == null) return NotFound($"Couldn't find fruit with category {category}");
 
-            var response = _mapper.Map<List<ViewModel>>(result);
+            var response = _mapper.Map<List<ViewModels.Fruit.ViewModel>>(result);
             return Ok(response);
         }
-        // TODO VAD GÖRA MED CATEGORY???
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateFruit(int id, [FromBody] PutViewModel fruit)
         {
             var toUpdate = await _unitOfWork.FruitRepository.FindFruitAsync(id);
-            if (toUpdate == null) return NotFound($"Kunde inte hitta fruk med id {id}");
+            if (toUpdate == null) return NotFound($"Couldn't find fruit with id {id}");
 
             toUpdate.PluNumber = fruit.PluNumber;
             toUpdate.Name = fruit.Name;
@@ -93,18 +92,18 @@ namespace AndreasFruit_api.Controllers
             if (_unitOfWork.FruitRepository.UpdateFruit(toUpdate))
                 if (await _unitOfWork.Complete()) return NoContent();
 
-            return StatusCode(500, "Något annat gick fel");
+            return StatusCode(500, "Something went wrong.");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveFruit(int id){
             var toDelete = await _unitOfWork.FruitRepository.FindFruitAsync(id);
-            if (toDelete == null) return NotFound($"Vi kunde inte hitta frukt med id {id}");
+            if (toDelete == null) return NotFound($"Couldn't find fruit with id {id}");
 
             if (_unitOfWork.FruitRepository.RemoveFruit(toDelete))
-            if(await _unitOfWork.Complete()) return NoContent();
+            if(await _unitOfWork.Complete()) return Ok("Fruit deleted successfully!");
 
-            return StatusCode(500, "Kunde ej ta bort frukten");
+            return StatusCode(500, "Couldn't delete fruit.");
         }
 
     }

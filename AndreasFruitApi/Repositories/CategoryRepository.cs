@@ -39,7 +39,33 @@ namespace AndreasFruit_api.Repositories
 
         public async Task<IList<Category>> ListCategoriesAsync()
         {
-           return await _context.Categories.ToListAsync();
+            return await _context.Categories.ToListAsync();
+        }
+
+        public bool UpdateCategory(Category category)
+        {
+            try
+            {
+                _context.Categories.Update(category);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool RemoveCategory(Category category)
+        {
+            try
+            {
+                _context.Categories.Remove(category);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

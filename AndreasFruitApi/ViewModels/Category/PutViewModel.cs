@@ -1,4 +1,4 @@
-namespace AndreasFruit_api.ViewModels.Fruit
+namespace AndreasFruit_api.ViewModels.Category
 {
     public class PutViewModel : PostViewModel
     {

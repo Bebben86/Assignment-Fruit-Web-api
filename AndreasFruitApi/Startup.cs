@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using AndreasFruit_api.Data;
 using Microsoft.EntityFrameworkCore;
 using AndreasFruit_api.Interfaces;
+using AndreasFruit_api.Helpers;
 
 namespace AndreasFruit_api
 {
@@ -23,18 +24,21 @@ namespace AndreasFruit_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<FruitContext>(c =>
+            services.AddDbContext<FruitContext>(cs =>
             {
-                c.UseSqlite(Configuration.GetConnectionString("DefaultConnectionString"));
+                cs.UseSqlite(Configuration.GetConnectionString("DefaultConnectionString"));
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AndreasFruit_api", Version = "v1" });
+                c.CustomSchemaIds(i => i.FullName);
             });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +49,10 @@ namespace AndreasFruit_api
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AndreasFruit_api v1"));
+                
             }
+
+            app.UseCors(opt => opt.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseHttpsRedirection();
 
