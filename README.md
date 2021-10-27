@@ -1,4 +1,4 @@
-# Assignment-api
+# Assignment-Fruit-web-api
 Assignment in web developement class. The assigment is to create an api with GET, POST, PUT and DELETE endpoints. 
 
 The API has a simple SQLite-database with two tables; Fruits and Categories, and the tables are connected with ForeignKey CategoryId.
