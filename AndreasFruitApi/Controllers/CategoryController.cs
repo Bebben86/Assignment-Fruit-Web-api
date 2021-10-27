@@ -65,7 +65,7 @@ namespace AndreasFruit_api.Controllers
             return StatusCode(500, "Something went wrong.");
         }
 
-        [HttpDelete("categoryName")]
+        [HttpDelete("{categoryName}")]
         public async Task<IActionResult> RemoveCategory(string categoryName){
             var toDelete = await _unitOfWork.CategoryRepository.GetCategoryAsync(categoryName);
             if (toDelete == null) return NotFound($"Couldn't find fruit with name {categoryName}");
